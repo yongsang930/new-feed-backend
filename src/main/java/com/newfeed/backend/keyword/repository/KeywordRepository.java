@@ -1,4 +1,11 @@
 package com.newfeed.backend.keyword.repository;
 
-public class KeywordRepository {
+import com.newfeed.backend.keyword.entity.Keyword;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface KeywordRepository extends JpaRepository<Keyword, Long> {
+
+    boolean existsByEnName(String enName);
+
+    Keyword findByEnName(String enName);
 }

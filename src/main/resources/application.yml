@@ -9,9 +9,18 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+    properties:
+      format_sql: true
+      dialect: org.hibernate.dialect.PostgreSQLDialect
 
 logging:
   level:
     org.hibernate.SQL: debug
     #org.springframework.core.env: TRACE
+
+
+jwt:
+  secret: "YOUR_JWT_SECRET_KEY_256BIT_MINIMUM"
+  access-token-expiration: 3600000     # 1시간 (ms)
+  refresh-token-expiration: 1209600000 # 14일 (ms)
 

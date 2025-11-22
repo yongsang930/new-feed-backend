@@ -1,6 +1,7 @@
 package com.newfeed.backend.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -34,4 +35,15 @@ public class User {
 
     @Column(name = "updated_at", insertable = false, updatable = false)
     private LocalDateTime updatedAt;
+
+
+    // ⭐ builder가 사용할 생성자
+    @Builder
+    public User(String loginType, String socialId,
+                String email, String nickName) {
+        this.loginType = loginType;
+        this.socialId = socialId;
+        this.email = email;
+        this.nickName = nickName;
+    }
 }
