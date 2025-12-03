@@ -1,6 +1,6 @@
 package com.newfeed.backend.domain.keyword.entity;
 
-import com.newfeed.backend.domain.user.entity.User;
+import com.newfeed.backend.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,14 +17,14 @@ public class UserKeyword {
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("userId")
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @MapsId("keywordId")
     @JoinColumn(name = "keyword_id", nullable = false)
     private Keyword keyword;
 
-    public UserKeyword(User user, Keyword keyword) {
+    public UserKeyword(UserEntity  user, Keyword keyword) {
         this.user = user;
         this.keyword = keyword;
         this.id = new UserKeywordId(user.getUserId(), keyword.getKeywordId());

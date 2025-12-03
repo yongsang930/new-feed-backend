@@ -1,3 +1,7 @@
+server:
+  port: 8080
+  address: 0.0.0.0
+
 spring:
   datasource:
     url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}
@@ -15,9 +19,16 @@ spring:
 
 logging:
   level:
-    org.hibernate.SQL: debug
-    #org.springframework.core.env: TRACE
-
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.security: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security.authentication: DEBUG
+    org.springframework.security.authorization: DEBUG
+    org.springframework.web.servlet: DEBUG
+    org.springframework.web.filter: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.springframework.core.env: TRACE
 
 jwt:
   secret: "YOUR_JWT_SECRET_KEY_256BIT_MINIMUM"

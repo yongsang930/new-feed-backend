@@ -1,14 +1,14 @@
 package com.newfeed.backend.domain.user.repository;
 
-import com.newfeed.backend.domain.user.entity.User;
+import com.newfeed.backend.domain.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     // 이메일 로그인 시에도 사용할 수 있음
     boolean existsByEmail(String email);
 
-    Optional<User> findByEmail(String email);
+    Optional<UserEntity> findByEmail(String email);
 }
