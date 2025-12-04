@@ -1,12 +1,22 @@
 package com.newfeed.backend.domain.keyword.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.newfeed.backend.domain.post.entity.PostKeyword;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(
         name = "keywords",
         uniqueConstraints = {
@@ -14,8 +24,6 @@ import java.time.LocalDateTime;
                 @UniqueConstraint(name = "uk_keywords_ko_en", columnNames = {"ko_name", "en_name"})
         }
 )
-@Getter
-@NoArgsConstructor
 public class Keyword {
 
     @Id
@@ -37,4 +45,9 @@ public class Keyword {
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
+
+    @OneToMany(mappedBy = "keyword", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<PostKeyword> postKeywords = new ArrayList<>();
 }
+

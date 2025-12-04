@@ -24,7 +24,7 @@ public class GlobalExceptionHandler {
                 .body(response);
     }
 
-    // 가장 마지막: 예상치 못한 서버 에러
+    // 예상치 못한 서버 에러
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception ex) {
 

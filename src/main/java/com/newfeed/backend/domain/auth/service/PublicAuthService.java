@@ -6,19 +6,30 @@ import com.newfeed.backend.domain.auth.model.GuestLoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 @Service
 @RequiredArgsConstructor
 public class PublicAuthService {
 
     private final JwtTokenProvider jwtTokenProvider;
+    private final RefreshTokenService refreshTokenService;
 
     public GuestLoginResponse guestLogin() {
 
-        Long guestUserId = 0L;  // 게스트 유저 고정 아이디 or 랜덤 uuid
+        long guestUserId = -ThreadLocalRandom.current()
+                .nextLong(1, Long.MAX_VALUE);
 
-        String accessToken = jwtTokenProvider.createAccessToken(guestUserId, "guest@guest.local", Role.USER);
+        String accessToken = jwtTokenProvider.createAccessToken(
+                guestUserId,
+                "guest@local",
+                Role.GUEST
+        );
+
         String refreshToken = jwtTokenProvider.createRefreshToken(guestUserId);
 
-        return new GuestLoginResponse(accessToken, refreshToken, "UNLIMITED");
+        refreshTokenService.save(guestUserId, refreshToken);   // 여기만 DB INSERT
+
+        return new GuestLoginResponse(accessToken, refreshToken, "UNLIMITED", Role.GUEST);
     }
 }

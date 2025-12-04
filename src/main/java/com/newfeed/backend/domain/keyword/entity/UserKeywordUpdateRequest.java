@@ -10,4 +10,5 @@ import java.util.List;
 public class UserKeywordUpdateRequest {
 
     private List<Long> keywordIds;
+
 }

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(
@@ -37,9 +39,20 @@ public class Post {
     @Column(nullable = false, length = 20)
     private String region;
 
+    @Column(columnDefinition = "text")
+    private String content;
+
+    @Column(nullable = true, length = 255)
+    private String source;
+
+
     @Column(name = "published_at", nullable = false)
     private LocalDateTime publishedAt;
 
     @Column(name = "created_at", insertable = false, updatable = false)
     private LocalDateTime createdAt;
+
+    /** Post → PostKeyword 연관관계 */
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
+    private List<PostKeyword> postKeywords = new ArrayList<>();
 }

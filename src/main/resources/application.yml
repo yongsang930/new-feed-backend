@@ -19,16 +19,16 @@ spring:
 
 logging:
   level:
-    root: INFO
-    org.springframework.web: DEBUG
-    org.springframework.security: DEBUG
-    org.springframework.security.web: DEBUG
-    org.springframework.security.authentication: DEBUG
-    org.springframework.security.authorization: DEBUG
-    org.springframework.web.servlet: DEBUG
-    org.springframework.web.filter: DEBUG
+    root: DEBUG
     org.hibernate.SQL: DEBUG
-    org.springframework.core.env: TRACE
+#    org.springframework.web: DEBUG
+#    org.springframework.security: DEBUG
+#    org.springframework.security.web: DEBUG
+#    org.springframework.security.authentication: DEBUG
+#    org.springframework.security.authorization: DEBUG
+#    org.springframework.web.servlet: DEBUG
+#    org.springframework.web.filter: DEBUG
+#    org.springframework.core.env: TRACE
 
 jwt:
   secret: "YOUR_JWT_SECRET_KEY_256BIT_MINIMUM"

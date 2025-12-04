@@ -1,9 +1,15 @@
 package com.newfeed.backend.auth.principal;
 
 import com.newfeed.backend.auth.model.Role;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record AuthPrincipal(
-        Long userId,
-        String email,
-        Role role
-) {}
+@Getter
+@AllArgsConstructor
+public class AuthPrincipal {
+
+    private Long userId;
+    private String email;
+    private Role role;
+
+}

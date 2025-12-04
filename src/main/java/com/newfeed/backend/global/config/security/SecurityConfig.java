@@ -23,12 +23,14 @@ public class SecurityConfig {
             "/auth/**",
             "/oauth2/**",
             "/public/**",
+            "/favicon.ico"
     };
 
     private static final String[] API = {
             "/swagger-ui/**",
             "/v3/api-docs/**",
-            "/api/auth/**"
+//            "/api/auth/**",
+            "/api/**"
     };
 
     @Bean

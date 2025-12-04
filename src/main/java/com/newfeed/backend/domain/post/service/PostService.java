@@ -4,9 +4,14 @@ import com.newfeed.backend.domain.post.entity.Post;
 import com.newfeed.backend.domain.post.model.PostResponse;
 import com.newfeed.backend.domain.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -14,19 +19,28 @@ public class PostService {
 
     private final PostRepository postRepository;
 
-    // 최신순 전체 게시물 조회
-    public List<PostResponse> getLatestPosts() {
-        return postRepository.findAllByOrderByPublishedAtDesc()
-                .stream()
-                .map(PostResponse::from)
-                .toList();
+    public Page<PostResponse> getLatestPosts(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("publishedAt").descending());
+        Page<Post> postsPage = postRepository.findAll(pageable);
+        return postsPage.map(PostResponse::from);
     }
 
-    // 상세 조회
-    public PostResponse getPostDetail(Long postId) {
-        Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+    public Page<PostResponse> getPostsByKeywordIds(List<Long> keywordIds, int page, int size) {
 
-        return PostResponse.from(post);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("publishedAt").descending());
+
+        // null 제거
+        List<Long> cleaned = keywordIds.stream()
+                .filter(Objects::nonNull)
+                .distinct()
+                .toList();
+
+        if (cleaned.isEmpty()) {
+            return getLatestPosts(page, size);
+        }
+
+        Page<Post> postsPage = postRepository.findDistinctByPostKeywordsKeywordKeywordIdIn(cleaned, pageable);
+
+        return postsPage.map(PostResponse::from);
     }
 }

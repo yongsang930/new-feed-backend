@@ -42,7 +42,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtTokenProvider.getEmail(token);
 
             // enum Role 사용
-            Role role = jwtTokenProvider.getRole(token);   // Role.USER / Role.ADMIN
+            Role role = jwtTokenProvider.getRole(token);   // GUEST, USER, ADMIN
+
+            if (userId < 0) {
+                log.debug("GUEST access detected. userId={}", userId);
+
+                AuthPrincipal guestPrincipal =
+                        new AuthPrincipal(userId, email, Role.GUEST);
+
+                UsernamePasswordAuthenticationToken guestAuth =
+                        new UsernamePasswordAuthenticationToken(
+                                guestPrincipal,
+                                null,
+                                List.of(new SimpleGrantedAuthority("ROLE_GUEST"))
+                        );
+
+                SecurityContextHolder.getContext().setAuthentication(guestAuth);
+
+                filterChain.doFilter(request, response);
+                return; // ⚠ 중요: 정식 회원 처리로 넘어가지 않음
+            }
 
             // JWT 기반 인증을 위한 Principal (세션 방식이 아닌 DTO 형태)
             AuthPrincipal principal = new AuthPrincipal(userId, email, role);
