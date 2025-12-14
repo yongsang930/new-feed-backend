@@ -1,12 +1,15 @@
 package com.newfeed.backend.auth.jwt;
 
+import com.newfeed.backend.auth.model.Role;
+import com.newfeed.backend.global.error.TokenErrorCode;
+import com.newfeed.backend.global.exception.ApiException;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import com.newfeed.backend.auth.model.Role;
 
 import javax.crypto.SecretKey;
 import java.time.LocalDateTime;
@@ -67,13 +70,29 @@ public class JwtTokenProvider {
         return Role.valueOf(role); // 문자열 → enum 변환
     }
 
-    /** 토큰 유효성 검증 */
-    public boolean validateToken(String token) {
+    /**
+     * Access Token 검증 → boolean
+     */
+    public void validateToken(String token) {
         try {
             getClaims(token);
-            return true;
+
+        } catch (ExpiredJwtException e) {
+            throw new JwtAuthenticationException(TokenErrorCode.ACCESS_TOKEN_EXPIRED);
+
         } catch (JwtException | IllegalArgumentException e) {
-            return false;
+            throw new JwtAuthenticationException(TokenErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    /** Refresh Token 검증 → ApiException 발생 */
+    public void validateRefreshToken(String token) {
+        try {
+            getClaims(token);
+        } catch (ExpiredJwtException e) {
+            throw new ApiException(TokenErrorCode.REFRESH_TOKEN_EXPIRED);
+        } catch (JwtException | IllegalArgumentException e) {
+            throw new ApiException(TokenErrorCode.INVALID_TOKEN);
         }
     }
 

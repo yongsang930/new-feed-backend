@@ -1,6 +1,6 @@
 package com.newfeed.backend.global.api;
 
-import com.newfeed.backend.global.error.ErrorCode;
+import com.newfeed.backend.global.error.CommonErrorCode;
 import com.newfeed.backend.global.error.ErrorCodeIfs;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,8 +19,8 @@ public class Result {
 
     public static Result OK(){
         return Result.builder()
-            .resultCode(ErrorCode.OK.getErrorCode())
-            .resultMessage(ErrorCode.OK.getDescription())
+            .resultCode(CommonErrorCode.OK.getErrorCode())
+            .resultMessage(CommonErrorCode.OK.getDescription())
             .resultDescription("성공")
             .build();
     }

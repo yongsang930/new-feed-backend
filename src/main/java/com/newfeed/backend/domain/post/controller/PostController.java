@@ -17,14 +17,14 @@ public class PostController {
     // 전체 게시물 목록 조회
     @GetMapping("")
     public Api<?> list(  @RequestParam(defaultValue = "0") int page,
-                         @RequestParam(defaultValue = "30") int size) {
+                         @RequestParam(defaultValue = "9") int size) {
         return Api.OK(postService.getLatestPosts(page, size));
     }
 
     @GetMapping("/search")
     public Api<?> list(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "30") int size,
+            @RequestParam(defaultValue = "9") int size,
             @RequestParam(required = false) List<Long> keywordIds
     ) {
         if (keywordIds == null || keywordIds.isEmpty()) {

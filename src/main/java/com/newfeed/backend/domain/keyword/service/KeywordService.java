@@ -5,6 +5,8 @@ import com.newfeed.backend.domain.keyword.entity.UserPreferredKeyword;
 import com.newfeed.backend.domain.keyword.model.KeywordResponse;
 import com.newfeed.backend.domain.keyword.repository.KeywordRepository;
 import com.newfeed.backend.domain.keyword.repository.UserPreferredKeywordRepository;
+import com.newfeed.backend.global.error.CommonErrorCode;
+import com.newfeed.backend.global.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -82,6 +84,30 @@ public class KeywordService {
         return newKeywords.stream()
                 .map(KeywordResponse::from)
                 .toList();
+    }
+
+    private List<String> cleanInput(List<String> names) {
+        return names.stream()
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .distinct()
+                .toList();
+    }
+
+    private void validateInput(List<String> names) {
+        if (names.isEmpty()) {
+            throw new ApiException(CommonErrorCode.INVALID_KEYWORD_INPUT);
+        }
+
+        for (String name : names) {
+            if (name.length() > 50) {
+                throw new ApiException(CommonErrorCode.KEYWORD_TOO_LONG);
+            }
+            if (!name.matches("^[a-zA-Z0-9가-힣 ]+$")) {
+                throw new ApiException(CommonErrorCode.KEYWORD_INVALID_CHAR);
+            }
+        }
     }
 
 }

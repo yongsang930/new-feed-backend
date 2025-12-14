@@ -14,6 +14,8 @@ import java.io.IOException;
 @Component
 public class LoggerFilter implements Filter {
 
+    private static final int MAX_BODY_LENGTH = 100; // 로그로 남길 최대 길이
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
@@ -45,7 +47,7 @@ public class LoggerFilter implements Filter {
         var uri = req.getRequestURI();
         var method = req.getMethod();
 
-        log.info(">>>>> uri : {} , method : {} , header : {} , body : {}", uri, method, headerValues, requestBody);
+        log.info(">>>>> uri : {} , method : {} , header : {} , body : {}", uri, method, headerValues, truncateBody(requestBody));
 
 
         // response 정보
@@ -64,9 +66,19 @@ public class LoggerFilter implements Filter {
 
         var responseBody = new String(res.getContentAsByteArray());
 
-        log.info("<<<<< uri : {} , method : {} , header : {} , body : {}", uri, method, responseHeaderValues, responseBody);
-
+        log.info("<<<<< uri : {} , method : {} , header : {} , body : {}", uri, method, responseHeaderValues, truncateBody(responseBody));
 
         res.copyBodyToResponse();
+    }
+
+    /** body 길이 자르기 */
+    private String truncateBody(String body) {
+        if (body == null) return "";
+
+        if (body.length() > MAX_BODY_LENGTH) {
+            return body.substring(0, MAX_BODY_LENGTH) + "... (truncated)";
+        }
+
+        return body;
     }
 }
