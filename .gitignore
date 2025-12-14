@@ -1,2 +1,55 @@
-.gradle/
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+
+### Spring Boot build ###
 build/
+out/
+bin/
+
+### Gradle ###
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+**/build/
+gradle-app.setting
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.ipr
+*.iws
+
+### Eclipse (혹시 생길 경우 대비) ###
+.project
+.classpath
+.settings/
+
+### Logs ###
+logs/
+*.log
+
+### OS / Temporary files ###
+.DS_Store
+Thumbs.db
+
+### Environment & Secret Files ###
+application-local.yml
+application-dev.yml
+application-test.yml
+*.env
+.env.*
+.envrc
+
+### Cache ###
+*.cache
+*.tmp
+
+### Python (혹시 자동화 스크립트 연동 시) ###
+__pycache__/
+*.pyc
+
+### Docker ###
+/docker-compose.override.yml
+/.docker/
