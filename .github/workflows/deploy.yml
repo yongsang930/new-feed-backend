@@ -13,14 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Grant execute permission to gradlew
+        run: chmod +x gradlew
+
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-
-      - name: Build with Gradle
-        run: ./gradlew clean build -x test
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -29,13 +29,5 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Login to ECR
-        run: |
-          aws ecr get-login-password --region ap-northeast-2 \
-          | docker login --username AWS --password-stdin 277905774993.dkr.ecr.ap-northeast-2.amazonaws.com
-
-      - name: Build & Push Docker image
-        run: |
-          docker build -t newfeed-backend .
-          docker tag newfeed-backend:latest 277905774993.dkr.ecr.ap-northeast-2.amazonaws.com/newfeed-backend:latest
-          docker push 277905774993.dkr.ecr.ap-northeast-2.amazonaws.com/newfeed-backend:latest
+      - name: Deploy (build & push docker image)
+        run: make deploy
