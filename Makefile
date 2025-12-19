@@ -3,15 +3,13 @@ AWS_ACCOUNT_ID := 277905774993
 ECR_REPO := newfeed-backend
 ECR_URI := $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(ECR_REPO)
 
-GIT_SHA := $(shell git rev-parse --short HEAD)
-
 .PHONY: build
 build:
 	./gradlew clean build -x test
 
 .PHONY: docker-build
 docker-build:
-	docker build -t $(ECR_URI):$(GIT_SHA) .
+	docker build -t $(ECR_URI):latest .
 
 .PHONY: docker-login
 docker-login:
@@ -20,7 +18,7 @@ docker-login:
 
 .PHONY: docker-push
 docker-push:
-	docker push $(ECR_URI):$(GIT_SHA)
+	docker push $(ECR_URI):latest
 
 .PHONY: deploy
 deploy: build docker-build docker-login docker-push

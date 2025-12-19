@@ -25,21 +25,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      # Docker 이미지 sha 기준 빌드 & push
       - name: Build & Push Docker image
         run: make deploy
 
-      # Launch Template에 IMAGE_TAG 반영
-      - name: Update Launch Template with IMAGE_TAG
-        run: |
-          aws ec2 create-launch-template-version \
-            --launch-template-name newfeed-backend-lt \
-            --source-version '$Latest' \
-            --launch-template-data "{
-              \"UserData\": \"$(echo '#!/bin/bash\nIMAGE_TAG=${{ github.sha }}' | base64 -w0)\"
-            }"
-
-      # ASG Instance Refresh 시작
       - name: Start ASG Instance Refresh
         run: |
           aws autoscaling start-instance-refresh \
