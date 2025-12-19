@@ -3,7 +3,7 @@ name: backend-ci-check
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   check:
