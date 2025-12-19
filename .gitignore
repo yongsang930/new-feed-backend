@@ -1,2 +1,62 @@
-.gradle/
+1) 게스트 로그인 시
+accessToken 발급
+refreshToken 발급
+userId(음수) 부여
+role = GUEST
+로컬스토리지 저장
+refreshToken은 DB에도 저장 → userId와 연결
+
+
+### Java ###
+*.class
+*.jar
+*.war
+*.ear
+
+### Spring Boot build ###
 build/
+out/
+bin/
+
+### Gradle ###
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+**/build/
+gradle-app.setting
+
+### IntelliJ IDEA ###
+.idea/
+*.iml
+*.ipr
+*.iws
+
+### Eclipse (혹시 생길 경우 대비) ###
+.project
+.classpath
+.settings/
+
+### Logs ###
+logs/
+*.log
+
+### OS / Temporary files ###
+.DS_Store
+Thumbs.db
+
+### Environment & Secret Files ###
+*.env
+.env.*
+.envrc
+
+### Cache ###
+*.cache
+*.tmp
+
+### Python (혹시 자동화 스크립트 연동 시) ###
+__pycache__/
+*.pyc
+
+### Docker ###
+/docker-compose.override.yml
+/.docker/
+src/test/

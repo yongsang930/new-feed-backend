@@ -10,6 +10,7 @@ public class KeywordResponse {
     private Long keywordId;
     private final String enName;
     private final String koName;
+    private final boolean isActive;
     private boolean selected;
 
     public static KeywordResponse from(Keyword keyword) {
@@ -17,6 +18,7 @@ public class KeywordResponse {
                 keyword.getKeywordId(),
                 keyword.getEnName(),
                 keyword.getKoName(),
+                keyword.getIsActive(),
                 false                  // Post 상세 조회에서는 기본적으로 selected = false
         );
     }

@@ -52,7 +52,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+
+    // actuator
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
 }
 
 tasks.named('test') {
@@ -60,7 +63,7 @@ tasks.named('test') {
 }
 
 bootJar {
-    enabled = false
+    enabled = true
 }
 
 jar {

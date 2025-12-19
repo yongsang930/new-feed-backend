@@ -38,6 +38,7 @@ public class Keyword {
     private String koName;
 
     @Column(name = "is_active", nullable = false)
+    @Builder.Default
     private Boolean isActive = true;
 
     @Column(name = "created_at", insertable = false, updatable = false)
@@ -48,6 +49,7 @@ public class Keyword {
 
     @OneToMany(mappedBy = "keyword", fetch = FetchType.LAZY)
     @JsonIgnore
+    @Builder.Default
     private List<PostKeyword> postKeywords = new ArrayList<>();
 }
 

@@ -13,4 +13,6 @@ public interface KeywordRepository extends JpaRepository<Keyword, Long> {
 
     List<Keyword> findByKoNameInOrEnNameIn(List<String> koNames, List<String> enNames);
 
+    List<Keyword> findByIsActiveTrue();
+
 }

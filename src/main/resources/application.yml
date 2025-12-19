@@ -11,7 +11,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
     properties:
       format_sql: true
@@ -31,8 +31,24 @@ logging:
 #    org.springframework.core.env: TRACE
 
 jwt:
-  secret: "ABCDEF1234567890ABCDEF1234567890"
-#  access-token-expiration: 1800000     # 30분 (ms)
-  access-token-expiration: 20000     # 20초 (ms)
+  secret: ${JWT_SECRET}
+  access-token-expiration: 1800000     # 30분 (ms)
+  #access-token-expiration: 20000     # 20초 (ms)
   refresh-token-expiration: 1209600000 # 14일 (ms)
+
+cors:
+  allowed-origins: ${CORS_ALLOWED_ORIGINS}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+
+
+
+
 

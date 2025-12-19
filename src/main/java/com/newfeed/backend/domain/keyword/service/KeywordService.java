@@ -25,12 +25,12 @@ public class KeywordService {
 
     public List<KeywordResponse> getKeywordsWithSelection(Long userId) {
 
-        List<Keyword> all = keywordRepository.findAll();
+        List<Keyword> all = keywordRepository.findByIsActiveTrue();
 
         // 게스트
         if (userId < 0) {
             return all.stream()
-                    .map(k -> new KeywordResponse(k.getKeywordId(), k.getEnName(), k.getKoName(), false))
+                    .map(k -> new KeywordResponse(k.getKeywordId(), k.getEnName(), k.getKoName(), k.getIsActive(), false))
                     .toList();
         }
 
@@ -46,6 +46,7 @@ public class KeywordService {
                         k.getKeywordId(),
                         k.getEnName(),
                         k.getKoName(),
+                        k.getIsActive(),
                         selected.contains(k.getKeywordId())
                 ))
                 .toList();
