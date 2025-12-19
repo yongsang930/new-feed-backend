@@ -31,5 +31,6 @@ jobs:
       - name: Start ASG Instance Refresh
         run: |
           aws autoscaling start-instance-refresh \
-            --auto-scaling-group-name newfeed-backend-asg \
+            --auto-scaling-group-name newfeed-asg \
             --preferences '{"MinHealthyPercentage":50,"InstanceWarmup":300}'
+
