@@ -10,24 +10,38 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Grant execute permission to gradlew
-        run: chmod +x gradlew
+      - run: chmod +x gradlew
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+      - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-northeast-2
 
-      - name: Deploy (build & push docker image)
+      # Docker 이미지 sha 기준 빌드 & push
+      - name: Build & Push Docker image
         run: make deploy
+
+      # Launch Template에 IMAGE_TAG 반영
+      - name: Update Launch Template with IMAGE_TAG
+        run: |
+          aws ec2 create-launch-template-version \
+            --launch-template-name newfeed-backend-lt \
+            --source-version '$Latest' \
+            --launch-template-data "{
+              \"UserData\": \"$(echo '#!/bin/bash\nIMAGE_TAG=${{ github.sha }}' | base64 -w0)\"
+            }"
+
+      # ASG Instance Refresh 시작
+      - name: Start ASG Instance Refresh
+        run: |
+          aws autoscaling start-instance-refresh \
+            --auto-scaling-group-name newfeed-backend-asg \
+            --preferences '{"MinHealthyPercentage":50,"InstanceWarmup":300}'
